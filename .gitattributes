@@ -1,0 +1,13 @@
+# Normaliza quebras de linha automaticamente no repositório
+* text=auto
+
+# Arquivos de código sempre com LF no repositório
+*.html text eol=lf
+*.css  text eol=lf
+*.js   text eol=lf
+*.md   text eol=lf
+
+# Binários (não normalizar)
+*.png binary
+*.jpg binary
+*.ico binary

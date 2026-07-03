@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kode — Estúdio de Projetos Digitais para Pequenos Negócios</title>
+  <meta name="description"
+    content="Ajudamos pequenos negócios a vender e atender melhor com sites institucionais, sistemas de agendamento online, controle de estoque simples e automações — rápido, honesto e com preço justo.">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Favicon Mock -->
+  <link rel="icon" type="image/png" href="assets/logos/monograma_flame.png">
+</head>
+
+<body>
+
+  <!-- ==========================================
+       1. HEADER & NAVIGATION
+       ========================================== -->
+  <header class="main-header" id="header">
+    <div class="container">
+      <a href="#inicio" class="logo">
+        <span>kode</span><span class="caret-blink"></span>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#inicio" class="nav-link active">Início</a>
+        <a href="#sobre" class="nav-link">Sobre</a>
+        <a href="#servicos" class="nav-link">Serviços</a>
+        <a href="#planejador" class="nav-link">Planejador</a>
+        <a href="#processo" class="nav-link">Processo</a>
+        <a href="#contato" class="nav-link">Contato</a>
+        <a href="https://wa.me/5541996973947?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20um%20projeto%20para%20meu%20neg%C3%B3cio."
+          target="_blank" rel="noopener" class="nav-cta">
+          <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </a>
+      </nav>
+
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       2. HERO SECTION
+       ========================================== -->
+  <section class="hero" id="inicio">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-kicker">ESTÚDIO DIGITAL KODE</span>
+        <h1 class="hero-title">Ajudamos seu negócio a vender e atender melhor.</h1>
+        <p class="hero-description">
+          Desenvolvemos sites rápidos, sistemas de agendamento online, controle de estoque e automações sob medida.
+          Projetos estruturados por profissionais e desenvolvidos com tecnologia de ponta. Rápido, direto e honesto.
+        </p>
+        <div class="hero-actions">
+          <a href="#planejador" class="btn btn-primary">Planejar Projeto</a>
+          <a href="#contato" class="btn btn-secondary">Falar com Consultor</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="terminal-container">
+          <div class="terminal-header">
+            <div class="terminal-buttons">
+              <span class="terminal-button"></span>
+              <span class="terminal-button"></span>
+              <span class="terminal-button"></span>
+            </div>
+            <div class="terminal-title">kode-agent ~ app.js</div>
+            <div></div>
+          </div>
+          <div class="terminal-body" id="terminal-body">
+            <!-- Will be animated via script.js -->
+            <div class="terminal-line">
+              <span class="terminal-prefix">&gt;</span>
+              <span class="terminal-code">npm init kode-studio</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-comment">// Inicializando ambiente de desenvolvimento...</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-user">System:</span>
+              <span class="terminal-code" style="color: var(--color-lime);">Kode Studio ativado com sucesso.</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-prefix">&gt;</span>
+              <span class="terminal-code">executando checklist_qa...</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-code" style="color: var(--color-muted);">[1/3] Mobile responsividade: OK</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-code" style="color: var(--color-muted);">[2/3] Segurança &amp; chaves privadas:
+                Protegido</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-code" style="color: var(--color-muted);">[3/3] Revisão final do Arquiteto...</span>
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-code" style="color: var(--color-flame); font-weight: bold;">Status: PRONTO PARA
+                IMPLEMENTAR_</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       3. ABOUT & ESSENCE SECTION
+       ========================================== -->
+  <section class="essence section-padding" id="sobre">
+    <div class="container">
+      <div class="section-header">
+        <span class="kicker">01 — ESSÊNCIA</span>
+        <h2 class="section-title">Código com gente competente por trás.</h2>
+        <p class="section-subtitle">
+          A Kode entrega tecnologia que pequenos negócios entendem e confiam. Somos técnicos de verdade, mas falamos a
+          língua de quem cuida do dia a dia da sua empresa.
+        </p>
+      </div>
+
+      <div class="essence-grid">
+        <div class="essence-card">
+          <span class="essence-num">01</span>
+          <h3 class="essence-title">Honesta</h3>
+          <p class="essence-desc">Combinado que não se quebra. Não prometemos prazos que não podemos cumprir, nem
+            criamos escopos vagos para cobrar taxas extras depois. Tudo é transparente desde o primeiro dia.</p>
+        </div>
+        <div class="essence-card">
+          <span class="essence-num">02</span>
+          <h3 class="essence-title">Estruturada</h3>
+          <p class="essence-desc">Cada frente do seu projeto tem um dono e um fluxo claro do contato até a manutenção.
+            Unimos o dinamismo da inteligência artificial à responsabilidade humana na entrega.</p>
+        </div>
+        <div class="essence-card">
+          <span class="essence-num">03</span>
+          <h3 class="essence-title">Acessível</h3>
+          <p class="essence-desc">Focamos em ofertas com escopo fechado e soluções sob medida. Você sabe exatamente o
+            que está incluído, o que não está incluído e qual é o prazo final, sem surpresas no orçamento.</p>
+        </div>
+        <div class="essence-card">
+          <span class="essence-num">04</span>
+          <h3 class="essence-title">Técnica</h3>
+          <p class="essence-desc">Realizamos testes rigorosos antes de entregar, otimizamos o carregamento em celulares
+            e computadores e blindamos seus dados. Qualidade de engenharia e segurança não são opcionais.</p>
+        </div>
+      </div>
+
+      <!-- Partners Section -->
+      <div class="partners-section">
+        <div class="section-header" style="margin-bottom: 48px;">
+          <span class="kicker">SÓCIOS FUNDADORES</span>
+          <h3 class="section-title" style="font-size: 36px;">Quem cuida do seu projeto</h3>
+        </div>
+
+        <div class="partners-grid">
+          <div class="partner-card">
+            <div class="partner-info">
+              <h4>Consultor Comercial</h4>
+              <span class="partner-role">Comercial &amp; Relacionamento</span>
+              <p class="partner-bio">Alinha suas necessidades, constrói propostas transparentes com escopo fechado e
+                garante que sua comunicação com o estúdio seja fluida e eficiente do início ao fim.</p>
+            </div>
+          </div>
+          <div class="partner-card">
+            <div class="partner-info">
+              <h4>Arquiteto de Soluções</h4>
+              <span class="partner-role">Engenharia de Software</span>
+              <p class="partner-bio">Decide a arquitetura, gerencia a infraestrutura de servidores e revisa
+                minuciosamente cada linha de código gerada por IA para garantir segurança e robustez absoluta.</p>
+            </div>
+          </div>
+          <div class="partner-card">
+            <div class="partner-info">
+              <h4>Gestor de Operações & QA</h4>
+              <span class="partner-role">Operações &amp; QA</span>
+              <p class="partner-bio">Responsável pela organização das etapas, testes rigorosos de usabilidade em
+                celular/desktop antes do deploy, treinamento de entrega e suporte pós-venda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================
+       4. SERVICES & CATALOG SECTION
+       ========================================== -->
+  <section class="services section-padding" id="servicos">
+    <div class="container">
+      <div class="section-header">
+        <span class="kicker">02 — O QUE FAZEMOS</span>
+        <h2 class="section-title">Nossas Soluções Padronizadas</h2>
+        <p class="section-subtitle">
+          Desenvolvemos ofertas fechadas, com escopo claro e prazos definidos. Sem enrolação, sem scope creep e focado
+          no que dá resultado real.
+        </p>
+      </div>
+
+      <div class="services-grid">
+
+        <!-- Service 1 -->
+        <div class="service-card" data-service-id="site">
+          <div class="service-meta">
+            <div class="service-icon"><i class="fa-solid fa-laptop-code"></i></div>
+            <span class="service-timeline">5 a 10 dias úteis</span>
+          </div>
+          <div class="service-content">
+            <h3>Site Institucional / LP</h3>
+            <p class="service-desc">Página de alta performance focada em apresentar sua marca, seus diferenciais e
+              converter cliques em clientes no WhatsApp.</p>
+
+            <div class="service-details">
+              <span class="details-title">O que inclui</span>
+              <div class="details-list">
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Até 5 seções
+                    personalizadas</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Design responsivo (celular
+                    e desktop)</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Botão de WhatsApp e
+                    formulário de contato</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Integração com Google Maps
+                    para negócios locais</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Publicação e configuração
+                    de domínio inclusas</span></div>
+              </div>
+              <span class="details-title">O que NÃO inclui</span>
+              <div class="details-list">
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Área restrita de login /
+                    painel do cliente</span></div>
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Blog de notícias ativo ou
+                    e-commerce complexo</span></div>
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Produção de fotos
+                    profissionais e redação técnica</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card" data-service-id="agendamento">
+          <div class="service-meta">
+            <div class="service-icon"><i class="fa-regular fa-calendar-check"></i></div>
+            <span class="service-timeline">3 a 5 semanas</span>
+          </div>
+          <div class="service-content">
+            <h3>Agendamento Online</h3>
+            <p class="service-desc">Página dedicada onde o cliente final agenda serviços sozinho e você acompanha tudo
+              por um painel administrativo limpo.</p>
+
+            <div class="service-details">
+              <span class="details-title">O que inclui</span>
+              <div class="details-list">
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Cadastro de profissionais,
+                    serviços e horários</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Painel do proprietário
+                    para gestão da agenda</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Notificações por e-mail
+                    (ou WhatsApp via API)</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Regras inteligentes contra
+                    duplicidade de horários</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Banco de dados seguro para
+                    armazenamento</span></div>
+              </div>
+              <span class="details-title">O que NÃO inclui</span>
+              <div class="details-list">
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Gateways de pagamento
+                    online integrado (ex: Pix/Cartão)</span></div>
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Aplicativo móvel nativo
+                    (iOS/Android)</span></div>
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Multi-unidades e
+                    franquias com regras complexas</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-card" data-service-id="estoque">
+          <div class="service-meta">
+            <div class="service-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <span class="service-timeline">4 a 6 semanas</span>
+          </div>
+          <div class="service-content">
+            <h3>Controle de Estoque</h3>
+            <p class="service-desc">Sistema web direto para cadastrar produtos, registrar entradas, saídas e monitorar
+              saldo real sem planilhas confusas.</p>
+
+            <div class="service-details">
+              <span class="details-title">O que inclui</span>
+              <div class="details-list">
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Cadastro de itens,
+                    categorias e valores de custo/venda</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Registro simplificado de
+                    entradas e saídas de estoque</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Alertas visuais de estoque
+                    crítico/mínimo</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Histórico e registro
+                    (logs) de movimentações</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Relatório básico de saldo
+                    total e capital investido</span></div>
+              </div>
+              <span class="details-title">O que NÃO inclui</span>
+              <div class="details-list">
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Emissão de Notas Fiscais
+                    eletrônicas (NF-e/NFC-e)</span></div>
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Leitura de código de
+                    barras via câmera de celular nativa</span></div>
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Integração complexa de
+                    estoque com múltiplos marketplaces</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-card" data-service-id="dashboard">
+          <div class="service-meta">
+            <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <span class="service-timeline">1 a 3 semanas</span>
+          </div>
+          <div class="service-content">
+            <h3>Painel de Dados / Dashboard</h3>
+            <p class="service-desc">Visualização rápida e centralizada das principais métricas do seu negócio (vendas,
+              atendimentos) em gráficos intuitivos.</p>
+
+            <div class="service-details">
+              <span class="details-title">O que inclui</span>
+              <div class="details-list">
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Indicadores de performance
+                    (KPIs) combinados</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Gráficos de linhas, barras
+                    e pizza interativos</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Integração de dados a
+                    partir de planilhas ou sistemas</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Atualização de dados
+                    facilitada</span></div>
+              </div>
+              <span class="details-title">O que NÃO inclui</span>
+              <div class="details-list">
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Integração com ERPs
+                    legados fechados e sem APIs de exportação</span></div>
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Limpeza e padronização de
+                    dados altamente corrompidos</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="service-card" data-service-id="automacao">
+          <div class="service-meta">
+            <div class="service-icon"><i class="fa-solid fa-circle-nodes"></i></div>
+            <span class="service-timeline">3 a 10 dias úteis</span>
+          </div>
+          <div class="service-content">
+            <h3>Automação de Processos</h3>
+            <p class="service-desc">Elimine tarefas manuais repetitivas interligando as ferramentas que você já usa no
+              dia a dia automaticamente.</p>
+
+            <div class="service-details">
+              <span class="details-title">O que inclui</span>
+              <div class="details-list">
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Mapeamento de 1 fluxo de
+                    trabalho automático</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Configuração do fluxo (ex:
+                    Formulário -> Planilha -> WhatsApp)</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Testes exaustivos de
+                    consistência de envio</span></div>
+                <div class="details-item in"><i class="fa-regular fa-circle-check"></i> <span>Manual simples explicando
+                    a regra de funcionamento</span></div>
+              </div>
+              <span class="details-title">O que NÃO inclui</span>
+              <div class="details-list">
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Automações dependentes de
+                    sistemas sem qualquer API</span></div>
+                <div class="details-item out"><i class="fa-regular fa-circle-xmark"></i> <span>Custos de licenças de
+                    ferramentas de terceiros (ex: Make, Zapier)</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       5. INTERACTIVE SCOPE PLANNER (WOW FACTOR)
+       ========================================== -->
+  <section class="planner section-padding" id="planejador">
+    <div class="container">
+      <div class="section-header">
+        <span class="kicker">03 — PLANEJADOR DE PROJETO</span>
+        <h2 class="section-title">Monte seu escopo ideal</h2>
+        <p class="section-subtitle">
+          Selecione as ferramentas e páginas que seu negócio precisa. Nosso planejador consolida as soluções e estima o
+          prazo médio para entregarmos tudo rodando perfeitamente.
+        </p>
+      </div>
+
+      <div class="planner-container">
+        <div class="planner-selector">
+
+          <div class="planner-option" data-id="site" data-time="7">
+            <div class="option-left">
+              <div class="option-checkbox"><i class="fa-solid fa-check"></i></div>
+              <div class="option-info">
+                <h4>Site Institucional / Landing Page</h4>
+                <p>Presença online e captação de clientes</p>
+              </div>
+            </div>
+            <span class="service-timeline"
+              style="background: none; border-color: rgba(243,238,227,0.1); color: var(--color-bone);">~ 7 dias</span>
+          </div>
+
+          <div class="planner-option" data-id="agendamento" data-time="28">
+            <div class="option-left">
+              <div class="option-checkbox"><i class="fa-solid fa-check"></i></div>
+              <div class="option-info">
+                <h4>Sistema de Agendamento Online</h4>
+                <p>Reserva autônoma de horários e painel de agenda</p>
+              </div>
+            </div>
+            <span class="service-timeline"
+              style="background: none; border-color: rgba(243,238,227,0.1); color: var(--color-bone);">~ 28 dias</span>
+          </div>
+
+          <div class="planner-option" data-id="estoque" data-time="35">
+            <div class="option-left">
+              <div class="option-checkbox"><i class="fa-solid fa-check"></i></div>
+              <div class="option-info">
+                <h4>Controle de Estoque Simples</h4>
+                <p>Cadastro de saldo e entrada/saída de mercadorias</p>
+              </div>
+            </div>
+            <span class="service-timeline"
+              style="background: none; border-color: rgba(243,238,227,0.1); color: var(--color-bone);">~ 35 dias</span>
+          </div>
+
+          <div class="planner-option" data-id="dashboard" data-time="14">
+            <div class="option-left">
+              <div class="option-checkbox"><i class="fa-solid fa-check"></i></div>
+              <div class="option-info">
+                <h4>Painel / Dashboard de Dados</h4>
+                <p>Gráficos integrados com estatísticas do negócio</p>
+              </div>
+            </div>
+            <span class="service-timeline"
+              style="background: none; border-color: rgba(243,238,227,0.1); color: var(--color-bone);">~ 14 dias</span>
+          </div>
+
+          <div class="planner-option" data-id="automacao" data-time="7">
+            <div class="option-left">
+              <div class="option-checkbox"><i class="fa-solid fa-check"></i></div>
+              <div class="option-info">
+                <h4>Automação de Fluxo de Trabalho</h4>
+                <p>Conexão automática entre formulários, planilhas e alertas</p>
+              </div>
+            </div>
+            <span class="service-timeline"
+              style="background: none; border-color: rgba(243,238,227,0.1); color: var(--color-bone);">~ 7 dias</span>
+          </div>
+
+        </div>
+
+        <div class="planner-summary">
+          <div>
+            <div class="summary-header">
+              <h3>Resumo do Escopo</h3>
+            </div>
+
+            <div class="summary-items" id="summary-items-list">
+              <div class="summary-item-placeholder">
+                <i class="fa-solid fa-cubes"></i>
+                <p>Nenhuma solução selecionada.<br>Selecione ao lado para montar seu escopo.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-totals">
+            <div class="total-row">
+              <span class="total-label">Soluções escolhidas:</span>
+              <span class="total-val" id="total-solutions" style="font-size: 20px;">0</span>
+            </div>
+            <div class="total-row" style="border-top: 1px dashed rgba(243,238,227,0.1); padding-top: 12px;">
+              <span class="total-label">Prazo médio estimado:</span>
+              <span class="total-val time-val" id="total-time">—</span>
+            </div>
+
+            <button class="btn btn-primary planner-cta" id="btn-planner-whatsapp" disabled>
+              <i class="fa-brands fa-whatsapp" style="margin-right: 8px; font-size: 18px;"></i> Solicitar Cotação
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       6. PROCESS / HOW WE WORK SECTION
+       ========================================== -->
+  <section class="process section-padding" id="processo">
+    <div class="container">
+      <div class="section-header">
+        <span class="kicker">04 — COMO TRABALHAMOS</span>
+        <h2 class="section-title">Nosso Processo de Entrega</h2>
+        <p class="section-subtitle">
+          Garantimos previsibilidade e controle em cada etapa. Desde a conversa inicial até a manutenção do sistema no
+          ar, você sabe exatamente quem está no comando.
+        </p>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-badge">1</div>
+          <div class="timeline-panel">
+            <span class="timeline-owner">Consultor Comercial</span>
+            <h4>Contato e Qualificação</h4>
+            <p>Entendemos seu modelo de negócio, suas dores e objetivos. Alinhamos expectativas para ter certeza de que
+              nossa equipe é a escolha certa para o que você precisa.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-badge">2</div>
+          <div class="timeline-panel">
+            <span class="timeline-owner">Consultor Comercial</span>
+            <h4>Proposta e Contrato</h4>
+            <p>Enviamos uma proposta detalhada contendo exatamente o escopo técnico do projeto, prazos claros e tudo o
+              que está fora da entrega. Fechamos em contrato transparente para segurança jurídica mútua.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-badge">3</div>
+          <div class="timeline-panel">
+            <span class="timeline-owner">Gestor de Operações & QA</span>
+            <h4>Coleta de Requisitos</h4>
+            <p>Mapeamos minuciosamente todas as informações, fotos, logotipos, horários e regras operacionais. Cada
+              detalhe entra no documento de requisitos para iniciarmos a engenharia sem atrasos.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-badge">4</div>
+          <div class="timeline-panel">
+            <span class="timeline-owner">Arquiteto de Soluções</span>
+            <h4>Desenvolvimento &amp; Revisão</h4>
+            <p>Construímos as telas e lógica usando ferramentas ágeis para ganhar velocidade. Revisamos manualmente cada
+              linha de código para blindar segurança e performance.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-badge">5</div>
+          <div class="timeline-panel">
+            <span class="timeline-owner">Gestor de Operações & QA</span>
+            <h4>QA &amp; Testes de Verdade</h4>
+            <p>Testamos seu site/sistema exaustivamente em celulares e desktops. Simulamos o comportamento de clientes
+              reais, tratando mensagens de erro e prevenindo falhas de agendamento ou estoque.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-badge">6</div>
+          <div class="timeline-panel">
+            <span class="timeline-owner">Arquiteto de Soluções</span>
+            <h4>Deploy e Publicação</h4>
+            <p>Subimos o projeto em ambiente de produção seguro, conectamos seu domínio próprio e configuramos os
+              certificados SSL para navegação criptografada (o cadeado de segurança).</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-badge">7</div>
+          <div class="timeline-panel">
+            <span class="timeline-owner">Comercial / Operações</span>
+            <h4>Entrega e Treinamento</h4>
+            <p>Apresentamos a solução completa no ar, entregamos todas as chaves de acesso e ensinamos você e sua equipe
+              a gerenciar o dia a dia. Você se torna 100% autônomo para operar seu negócio.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-badge">8</div>
+          <div class="timeline-panel">
+            <span class="timeline-owner">Gestor de Operações & QA</span>
+            <h4>Suporte e Manutenção</h4>
+            <p>Garantimos a estabilidade, backups automáticos de banco de dados, renovações de domínio e realizamos
+              pequenos ajustes necessários para manter tudo operando com velocidade e sem bugs.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       7. CONTACT & FAQ SECTION
+       ========================================== -->
+  <section class="contact-faq section-padding" id="contato">
+    <div class="container">
+      <div class="contact-faq-grid">
+
+        <!-- Contact Form -->
+        <div class="contact-form-container">
+          <div class="section-header" style="margin-bottom: 32px;">
+            <span class="kicker">FALE CONOSCO</span>
+            <h3 class="section-title" style="font-size: 38px;">Inicie seu Projeto</h3>
+            <p class="section-subtitle" style="font-size: 16px;">Preencha o formulário abaixo. Retornamos em até 24
+              horas úteis com uma proposta clara.</p>
+          </div>
+
+          <form class="contact-form" id="main-contact-form">
+            <div class="form-group">
+              <label for="form-name" class="form-label">Nome Completo</label>
+              <input type="text" id="form-name" class="form-input" placeholder="Ex: Ana Silva" required>
+            </div>
+
+            <div class="form-group">
+              <label for="form-business" class="form-label">Nome da Empresa / Negócio</label>
+              <input type="text" id="form-business" class="form-input" placeholder="Ex: Salão da Ana" required>
+            </div>
+
+            <div class="form-group">
+              <label for="form-phone" class="form-label">WhatsApp de Contato</label>
+              <input type="tel" id="form-phone" class="form-input" placeholder="Ex: (11) 99999-9999" inputmode="numeric"
+                pattern="[\d\s\(\)\-\+]+" title="Digite apenas números" required>
+            </div>
+
+            <div class="form-group">
+              <label for="form-message" class="form-label">Nos conte um pouco do que precisa</label>
+              <textarea id="form-message" class="form-input"
+                placeholder="Ex: Preciso de uma landing page para divulgar meus serviços e um botão de agendamento online integrado."
+                required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              Enviar Mensagem por WhatsApp <i class="fa-solid fa-paper-plane"
+                style="margin-left: 8px; font-size: 14px;"></i>
+            </button>
+
+            <div class="form-feedback" id="form-success-feedback">
+              <i class="fa-solid fa-circle-check" style="margin-right: 8px;"></i> Formulário processado! Redirecionando
+              para o WhatsApp comercial...
+            </div>
+          </form>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div>
+          <div class="section-header" style="margin-bottom: 40px;">
+            <span class="kicker">DÚVIDAS FREQUENTES</span>
+            <h3 class="section-title" style="font-size: 38px;">Respostas Diretas</h3>
+            <p class="section-subtitle" style="font-size: 16px;">Acreditamos na honestidade operacional. Veja as
+              principais dúvidas resolvidas de forma clara.</p>
+          </div>
+
+          <div class="faq-container">
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>Vocês cobram manutenção mensal obrigatória?</span>
+                <i class="fa-solid fa-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Sistemas que envolvem banco de dados (agendamento e estoque) precisam de servidores ativos, backup de segurança
+                  diário e monitoramento de estabilidade. Nossa taxa de suporte mensal cobre hospedagem em nuvem rápida,
+                  backups automáticos, atualizações de segurança e pequenos ajustes que você precisar ao longo do mês.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>O site ou sistema será meu ou de vocês?</span>
+                <i class="fa-solid fa-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  <strong>O projeto é 100% seu.</strong> Após a quitação integral do valor do projeto de desenvolvimento, todos os
+                  códigos, contas de hospedagem e acessos são de propriedade única e exclusiva do cliente. Se decidir
+                  parar de trabalhar conosco no futuro, você pode levar seu site ou banco de dados para qualquer outra
+                  empresa ou desenvolvedor sem qualquer tipo de multa ou retenção.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>Como funciona o desenvolvimento?</span>
+                <i class="fa-solid fa-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Utilizamos ferramentas de última geração. Isso nos permite desenvolver em alta velocidade,
+                  automatizar testes repetitivos e criar estruturas completas em poucos dias. Cada interface
+                  é planejada por nós, e toda linha de código gerada passa pela auditoria técnica e refinamento
+                  do nosso Arquiteto antes de ser publicada. É o melhor dos dois mundos: rapidez de robô e rigor
+                  de engenheiro.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>E se eu precisar de novas funcionalidades depois?</span>
+                <i class="fa-solid fa-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Alterações simples e edições de textos/imagens já estão cobertas no plano de manutenção mensal. Caso
+                  você queira implementar um recurso totalmente novo (como adicionar um controle de estoque a uma
+                  landing page que você já tinha), nós fazemos um novo orçamento simplificado com escopo fechado,
+                  cobrando um valor à parte de acordo com a complexidade, sem reajustes abusivos na sua mensalidade
+                  fixa.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       8. FOOTER
+       ========================================== -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#inicio" class="logo" style="font-size: 24px;">
+            <span>kode</span><span class="caret-blink"></span>
+          </a>
+          <p style="margin-top: 12px;">
+            Estúdio de projetos digitais focado em pequenos negócios. Sites, agendamentos, estoque e automações
+            construídos com rigor técnico, rapidez e preço justo.
+          </p>
+        </div>
+
+        <div class="footer-links-group">
+          <h5>Navegação</h5>
+          <ul class="footer-links">
+            <li><a href="#inicio" class="footer-link">Início</a></li>
+            <li><a href="#sobre" class="footer-link">Sobre</a></li>
+            <li><a href="#servicos" class="footer-link">Serviços</a></li>
+            <li><a href="#planejador" class="footer-link">Planejador</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-group">
+          <h5>Operacional</h5>
+          <ul class="footer-links">
+            <li><a href="#processo" class="footer-link">Nosso Processo</a></li>
+            <li><a href="#contato" class="footer-link">Contato Comercial</a></li>
+            <li><span class="footer-link" style="opacity: 0.6; cursor: default;">Consultor Comercial</span></li>
+            <li><span class="footer-link" style="opacity: 0.6; cursor: default;">Arquiteto de Soluções</span></li>
+            <li><span class="footer-link" style="opacity: 0.6; cursor: default;">Gestor de Operações & QA</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Estúdio Kode. Todos os direitos reservados.</span>
+        <span>v0.1 · Nome comercial temporário sob validação.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Custom JavaScript -->
+  <script src="script.js"></script>
+</body>
+
+</html>

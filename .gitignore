@@ -1,0 +1,38 @@
+# ==========================================================
+#  Local dev / editor tooling  (não pertence ao site público)
+# ==========================================================
+.claude/
+.vscode/
+.idea/
+*.code-workspace
+
+# ==========================================================
+#  Segredos / variáveis de ambiente  (nunca versionar)
+# ==========================================================
+.env
+.env.*
+*.pem
+*.key
+secrets.*
+
+# ==========================================================
+#  Arquivos gerados pelo sistema operacional
+# ==========================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+desktop.ini
+$RECYCLE.BIN/
+# macOS
+.DS_Store
+.AppleDouble
+# Linux
+*~
+
+# ==========================================================
+#  Dependências / build  (caso o projeto cresça no futuro)
+# ==========================================================
+node_modules/
+dist/
+*.log
