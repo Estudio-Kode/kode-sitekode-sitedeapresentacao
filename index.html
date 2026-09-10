@@ -17,6 +17,13 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- Reveal no scroll: marca o <html> antes do primeiro paint para que os blocos
+       já nasçam invisíveis (sem "flash" de conteúdo). Só liga se o navegador
+       suportar IntersectionObserver — sem isso, tudo aparece normalmente. -->
+  <script>
+    if ('IntersectionObserver' in window) document.documentElement.classList.add('js-reveal');
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logos/monograma_flame.png">
 </head>
@@ -24,8 +31,10 @@
 <body>
 
   <!-- ==========================================
-       1. TOPBAR
+       1. TOPO FIXO (topbar + header)
        ========================================== -->
+  <div class="site-top" id="site-top">
+
   <div class="topbar">
     <div class="social">
       <a href="https://wa.me/5541996973947" target="_blank" rel="noopener" aria-label="Kode no WhatsApp">
@@ -80,7 +89,12 @@
 
     <div class="header-actions">
       <a href="https://wa.me/5541996973947?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20um%20projeto%20para%20meu%20neg%C3%B3cio."
-        target="_blank" rel="noopener" class="btn btn-primary nav-cta">WhatsApp</a>
+        target="_blank" rel="noopener" class="btn btn-primary nav-cta" aria-label="Falar com a Kode no WhatsApp">
+        <svg class="wa-glyph" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true">
+          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.88 9.88 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.19-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.26.86 5.82 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.25 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06a6.7 6.7 0 0 1-1.98-1.22 7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.72 2.63 4.17 3.69.58.25 1.04.4 1.4.51.58.19 1.11.16 1.53.1.46-.07 1.44-.59 1.65-1.16.2-.56.2-1.04.14-1.14-.06-.1-.23-.16-.48-.28Z"/>
+        </svg>
+        <span class="wa-label">WhatsApp</span>
+      </a>
 
       <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir menu" aria-expanded="false"
         aria-controls="nav-menu">
@@ -90,6 +104,8 @@
       </button>
     </div>
   </header>
+
+  </div><!-- /.site-top -->
 
   <!-- ==========================================
        3. HERO — REEL DE IDENTIDADE
@@ -172,17 +188,19 @@
           </article>
           <article class="card">
             <div class="card-top">
-              <h4>Arquiteto de Soluções</h4>
+              <h4>Tech Lead</h4>
             </div>
-            <p class="body-2">Decide a arquitetura, gerencia a infraestrutura de servidores e revisa minuciosamente cada
-              linha de código gerada por IA para garantir segurança e robustez absoluta.</p>
+            <p class="body-2">Define a arquitetura técnica, gerencia a infraestrutura de servidores e coordena o
+              desenvolvimento, com foco em segurança, escalabilidade e qualidade de código, incluindo a validação de
+              soluções geradas por IA.</p>
           </article>
           <article class="card">
             <div class="card-top">
-              <h4>Gestor de Operações &amp; QA</h4>
+              <h4>Desenvolvedores</h4>
             </div>
-            <p class="body-2">Responsável pela organização das etapas, testes rigorosos de usabilidade em
-              celular/desktop antes do deploy, treinamento de entrega e suporte pós-venda.</p>
+            <p class="body-2">Executam a criação e o desenvolvimento do projeto do início ao fim. São responsáveis pela
+              organização das etapas, testes rigorosos de usabilidade e qualidade (QA) em múltiplas plataformas
+              (celular/desktop) e pela execução do deploy com total segurança.</p>
           </article>
         </div>
       </div>

@@ -375,4 +375,167 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(stepMarquee);
   }
 
+  /* ---------------------------------------------------------
+     N+1. REVEAL NO SCROLL
+
+     Cada grupo (uma grade de cards, os passos do processo, o cabeçalho de
+     seção) entra em cascata: o primeiro filho anima primeiro, os seguintes
+     com um atraso curto. Feito com element.animate() e não com transition CSS
+     porque o reset global de prefers-reduced-motion neutraliza CSS com
+     !important. Quem pede menos movimento recebe só o fade, sem deslocamento.
+
+     A animação REPETE: quando o elemento sai inteiro do campo de visão ele
+     volta ao estado escondido, e anima de novo na próxima vez que entrar.
+     --------------------------------------------------------- */
+  const REVEAL_SELECTOR = [
+    '.reel-foot > div > *',
+    '.reel-foot .btn-row',
+    '.head > *',
+    '.card',
+    '.step',
+    '.planner-option',
+    '.planner-summary',
+    '.marquee',
+    '.form-group',
+    '.contact-form .btn',
+    '.faq-item',
+    '.foot-brand',
+    '.foot-links-group'
+  ].join(',');
+
+  const REVEAL_DURATION = 900;   // mais lento: dá tempo de ver a entrada
+  const REVEAL_SHIFT = 36;       // deslocamento maior: entrada mais nítida
+  const REVEAL_STAGGER = 120;    // atraso entre irmãos da mesma cascata
+
+  if (document.documentElement.classList.contains('js-reveal')) {
+    const revealTargets = Array.from(document.querySelectorAll(REVEAL_SELECTOR));
+    const running = new WeakMap();
+
+    const hiddenTransform = prefersReducedMotion
+      ? 'none'
+      : 'translateY(' + REVEAL_SHIFT + 'px)';
+
+    const reset = (el) => {
+      const anim = running.get(el);
+      if (anim) { anim.cancel(); running.delete(el); }
+      el.style.opacity = '0';
+      el.style.transform = hiddenTransform;
+    };
+
+    const show = (el, delay) => {
+      const previous = running.get(el);
+      if (previous) previous.cancel();
+
+      const anim = el.animate(
+        [
+          { opacity: 0, transform: hiddenTransform },
+          { opacity: 1, transform: 'none' }
+        ],
+        {
+          duration: prefersReducedMotion ? 650 : REVEAL_DURATION,
+          delay: delay,
+          easing: 'cubic-bezier(.2, 0, 0, 1)',   /* mesma curva do resto da marca */
+          fill: 'both'
+        }
+      );
+      running.set(el, anim);
+
+      anim.onfinish = () => {
+        // fixa o estado final em estilo inline e libera a animação
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        anim.cancel();
+        running.delete(el);
+      };
+    };
+
+    // agrupa por elemento-pai para escalonar irmãos na mesma cascata
+    const groupIndex = (el) => {
+      const siblings = Array.from(el.parentElement.children).filter(
+        (n) => revealTargets.indexOf(n) !== -1
+      );
+      return Math.min(siblings.indexOf(el), 5);   // trava o atraso máximo
+    };
+
+    /* Dois observers, porque entrada e saída têm gatilhos diferentes:
+
+       - entrada: dispara quando ~8% do elemento passa da margem de 10% do
+         rodapé, ou seja quando ele já entrou de verdade na tela;
+       - saída: threshold 0 e nenhuma margem, então só dispara quando o
+         elemento sai POR COMPLETO do campo de visão. É aí que ele rearma.
+         Sem esse par, um elemento parado na borda ficaria piscando. */
+    const enterObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) show(entry.target, groupIndex(entry.target) * REVEAL_STAGGER);
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+
+    const exitObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) reset(entry.target);
+      });
+    }, { threshold: 0 });
+
+    revealTargets.forEach((el) => {
+      enterObserver.observe(el);
+      exitObserver.observe(el);
+    });
+
+    // rede de segurança: se algo impedir o observer, nada fica invisível
+    window.setTimeout(() => {
+      revealTargets.forEach((el) => {
+        if (getComputedStyle(el).opacity === '0' && !running.get(el)) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }
+      });
+    }, 4000);
+  }
+
+  /* ---------------------------------------------------------
+     N+2. CURSOR DA WORDMARK — pisca como um terminal
+
+     A cadência estava em @keyframes, e o reset global de
+     prefers-reduced-motion zera animações CSS com !important. Aqui o piscar
+     é feito por timer, então a wordmark pisca em qualquer configuração.
+     Cadência do manual: ciclo de 1.1s, ~55% aceso, corte seco (sem fade).
+     --------------------------------------------------------- */
+  const cursors = document.querySelectorAll('.cursor');
+
+  if (cursors.length) {
+    const ON = 605, OFF = 495;   // 1.1s de ciclo, 55% aceso
+    let lit = true;
+
+    cursors.forEach((c) => c.classList.add('js-blink'));
+
+    const blinkTick = () => {
+      lit = !lit;
+      cursors.forEach((c) => { c.style.opacity = lit ? '1' : '0'; });
+      window.setTimeout(blinkTick, lit ? ON : OFF);
+    };
+    window.setTimeout(blinkTick, ON);
+  }
+
+  /* ---------------------------------------------------------
+     N+3. ALTURA DO TOPO FIXO
+
+     O topo é fixed, então sai do fluxo e não empurra mais o conteúdo.
+     Aqui a altura real é medida e publicada em --top-h, que o CSS usa como
+     padding do body e como scroll-margin das âncoras. Remedir no resize
+     porque a barra muda de altura no mobile (a topbar empilha).
+     --------------------------------------------------------- */
+  const siteTop = document.getElementById('site-top');
+
+  if (siteTop) {
+    const syncTopHeight = () => {
+      document.documentElement.style.setProperty(
+        '--top-h', Math.round(siteTop.getBoundingClientRect().height) + 'px'
+      );
+    };
+    syncTopHeight();
+    window.addEventListener('resize', syncTopHeight);
+    window.addEventListener('load', syncTopHeight);   // depois das fontes
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncTopHeight);
+  }
+
 });

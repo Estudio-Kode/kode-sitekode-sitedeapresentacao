@@ -25,12 +25,22 @@
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  /* pilha de interface: botões e etiquetas (a mesma do botão do WhatsApp) */
+  --font-ui: 'Helvetica Neue', Helvetica, Arial, 'Segoe UI', system-ui, sans-serif;
 
   /* Forma & movimento */
   --r-block: 24px;
   --r-card: 16px;
   --r-tag: 4px;
   --ease: cubic-bezier(.2, 0, 0, 1);
+
+  /* Halo Flame de hover — anel fino + brilho difuso.
+     O anel é box-shadow (não border) para não alterar o layout. */
+  --glow-flame: 0 0 0 1px rgba(255, 90, 54, .60),
+                0 0 30px -4px rgba(255, 90, 54, .55),
+                0 12px 36px -14px rgba(255, 90, 54, .42);
+  --glow-flame-soft: 0 0 0 1px rgba(255, 90, 54, .30),
+                     0 0 20px -8px rgba(255, 90, 54, .28);
   --pad: clamp(40px, 6vw, 104px);
   --gap: 10px;
 }
@@ -217,6 +227,10 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
   50.01%, 100% { opacity: 0; }
 }
 
+/* o JS pisca o cursor por timer (ver script.js): a keyframe fica só como
+   fallback para navegação sem JS */
+.cursor.js-blink { animation: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .cursor { animation: none; }
 }
@@ -262,9 +276,25 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
 .topbar svg { display: block; }
 
 /* 7. HEADER */
-.site-header {
-  position: sticky;
+/* O topo (barra preta + header branco) fica FIXO na tela: a navegação e a
+   wordmark com o cursor piscando acompanham a rolagem em toda a página.
+   A altura real é medida em JS e exposta em --top-h, usada como respiro do
+   conteúdo e como deslocamento das âncoras. */
+.site-top {
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+}
+
+body { padding-top: var(--top-h, 132px); }
+
+/* âncoras não param embaixo do topo fixo */
+[id] { scroll-margin-top: calc(var(--top-h, 132px) + 12px); }
+
+.site-header {
+  position: relative;
   z-index: 50;
   background: #fff;
   color: var(--color-ink);
@@ -326,9 +356,22 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
 }
 
 .nav-cta {
-  padding: 11px 20px;
-  font-size: 11.5px;
+  font-size: 14.5px;
+  padding: 10px 18px 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
 }
+
+/* O glifo e a palavra ficam em Ink (preto da marca), não no branco do botão. */
+.nav-cta,
+.nav-cta:hover,
+.nav-cta:active { color: var(--color-ink); }
+
+.nav-cta .wa-glyph { flex: none; }
+
+/* a família e a caixa já vêm de .btn (--font-ui); aqui só a entrelinha */
+.nav-cta .wa-label { line-height: 1; }
 
 .site-header .mobile-toggle {
   display: none;
@@ -357,10 +400,11 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
   gap: 10px;
   border-radius: 999px;
   padding: 14px 26px;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  text-transform: uppercase;
-  letter-spacing: .14em;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -.005em;
   border: 1px solid transparent;
   cursor: pointer;
   transition: background .16s var(--ease), color .16s var(--ease),
@@ -373,9 +417,13 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
   border-color: var(--color-flame);
 }
 
+.btn-primary { transition: background .16s var(--ease), border-color .16s var(--ease),
+              transform .12s var(--ease), box-shadow .18s var(--ease); }
+
 .btn-primary:hover {
   background: var(--color-flame-hover);
   border-color: var(--color-flame-hover);
+  box-shadow: var(--glow-flame-soft);
 }
 
 .btn-primary:active {
@@ -397,7 +445,11 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
   border-color: var(--hairline-strong, rgba(255, 255, 255, .2));
 }
 
-.btn-ghost:hover { background: var(--surface-2, rgba(255, 255, 255, .07)); }
+.btn-ghost:hover {
+  background: rgba(255, 90, 54, .10);
+  border-color: var(--color-flame);
+  box-shadow: var(--glow-flame-soft);
+}
 
 .btn-row {
   display: flex;
@@ -406,10 +458,11 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
 }
 
 .pill {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  text-transform: uppercase;
-  letter-spacing: .18em;
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -.005em;
   border: 1px solid var(--hairline-strong, rgba(255, 255, 255, .2));
   border-radius: 999px;
   padding: 7px 16px;
@@ -501,13 +554,20 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
   flex-direction: column;
   gap: 14px;
   transition: border-color .18s var(--ease), background .18s var(--ease),
-              transform .18s var(--ease);
+              transform .18s var(--ease), box-shadow .18s var(--ease);
 }
 
 .card:hover {
   background: var(--surface-2);
-  border-color: var(--hairline-strong);
+  border-color: var(--color-flame);
+  box-shadow: var(--glow-flame);
   transform: translateY(-2px);
+}
+
+/* Nas seções claras o halo laranja pesava: ali o card usa só o realce neutro. */
+.light .card:hover {
+  border-color: var(--hairline-strong);
+  box-shadow: none;
 }
 
 .card .num {
@@ -618,18 +678,22 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
   text-align: left;
   color: inherit;
   transition: border-color .18s var(--ease), background .18s var(--ease),
-              transform .18s var(--ease);
+              transform .18s var(--ease), box-shadow .18s var(--ease);
 }
 
 .planner-option:hover {
-  border-color: var(--hairline-strong);
+  border-color: var(--color-flame);
+  box-shadow: var(--glow-flame);
   transform: translateX(3px);
 }
 
 .planner-option.selected {
   border-color: var(--color-flame);
   background: rgba(255, 90, 54, .06);
+  box-shadow: var(--glow-flame-soft);   /* já selecionada: halo discreto */
 }
+
+.planner-option.selected:hover { box-shadow: var(--glow-flame); }
 
 .option-left {
   display: flex;
@@ -759,7 +823,38 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
   color: var(--color-flame);
 }
 
-.planner-cta { margin-top: 10px; width: 100%; }
+/* No planejador as etiquetas de prazo são informativas, não chamadas de
+   ação: peso regular, para não competir com o título da opção. */
+.planner-option .pill { font-weight: 400; }
+
+/* O "Solicitar cotação" é o fim do fluxo do planejador: ganha o mesmo
+   tratamento do botão do WhatsApp — fundo Flame, texto em Ink e a pilha de
+   interface em semibold. */
+.planner-cta {
+  margin-top: 10px;
+  width: 100%;
+  background: var(--color-flame);
+  border-color: var(--color-flame);
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.planner-cta:hover:not(:disabled) {
+  background: var(--color-flame-hover);
+  border-color: var(--color-flame-hover);
+  color: var(--color-ink);
+  box-shadow: var(--glow-flame-soft);
+}
+
+/* Enquanto nada está selecionado o botão continua sendo o mesmo botão,
+   só atenuado — sinaliza "ainda não" sem virar outro componente. */
+.planner-cta:disabled {
+  background: var(--color-flame);
+  border-color: var(--color-flame);
+  color: var(--color-ink);
+  opacity: .42;
+  cursor: not-allowed;
+}
 
 /* 13. MARQUEE */
 .marquee {
@@ -819,7 +914,11 @@ h4 { font-size: 19px; line-height: 1.2; letter-spacing: -.02em; }
   transition: background .18s var(--ease);
 }
 
-.step:hover { background: var(--surface-1); }
+.step:hover {
+  background: rgba(255, 90, 54, .05);
+  box-shadow: var(--glow-flame-soft);
+  border-radius: var(--r-card);
+}
 
 .step-num {
   font-family: var(--font-mono);
@@ -1129,3 +1228,29 @@ textarea.form-input {
   .site-header .wordmark { font-size: 28px; }
   .foot-note { flex-direction: column; gap: 8px; }
 }
+
+/* ==========================================================================
+   16. REVEAL NO SCROLL
+   O estado inicial vive aqui (por seletor, não por classe no HTML) para que
+   nada apareça antes de ser revelado. A animação em si é feita em JS com a
+   Web Animations API — o reset global de prefers-reduced-motion zera
+   animation/transition do CSS com !important, e o reveal não pode depender disso.
+   ========================================================================== */
+.js-reveal .reel-foot > div > *,
+.js-reveal .reel-foot .btn-row,
+.js-reveal .head > *,
+.js-reveal .card,
+.js-reveal .step,
+.js-reveal .planner-option,
+.js-reveal .planner-summary,
+.js-reveal .marquee,
+.js-reveal .form-group,
+.js-reveal .contact-form .btn,
+.js-reveal .faq-item,
+.js-reveal .foot-brand,
+.js-reveal .foot-links-group {
+  opacity: 0;
+}
+
+/* o estado final é aplicado em estilo inline pelo JS — nada de !important
+   aqui, senão o elemento não poderia voltar a se esconder para reanimar */
