@@ -351,7 +351,13 @@ document.addEventListener('DOMContentLoaded', () => {
       step = first.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
     };
     measureMarquee();
-    window.addEventListener('resize', measureMarquee);
+    let marqueeWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+      // idem: só remede em mudança de largura, não a cada barra de URL
+      if (window.innerWidth === marqueeWidth) return;
+      marqueeWidth = window.innerWidth;
+      measureMarquee();
+    });
 
     const marqueeSpeed = prefersReducedMotion ? 55 : 150;   // px/s
     const marqueeBand = marqueeTrack.parentElement;
@@ -403,19 +409,37 @@ document.addEventListener('DOMContentLoaded', () => {
     '.foot-links-group'
   ].join(',');
 
-  const REVEAL_DURATION = 900;   // mais lento: dá tempo de ver a entrada
-  const REVEAL_SHIFT = 36;       // deslocamento maior: entrada mais nítida
-  const REVEAL_STAGGER = 120;    // atraso entre irmãos da mesma cascata
+  /* No celular o deslocamento é menor e a cascata mais curta: a tela é
+     estreita, os blocos empilham e um deslocamento grande faz a página
+     parecer que está tremendo enquanto o dedo ainda rola. */
+  const isNarrow = window.matchMedia('(max-width: 760px)').matches;
+
+  const REVEAL_DURATION = isNarrow ? 700 : 900;
+  const REVEAL_SHIFT = isNarrow ? 18 : 36;
+  const REVEAL_STAGGER = isNarrow ? 70 : 120;
+  const REVEAL_COOLDOWN = 500;   // ms mínimos entre mostrar e poder rearmar
 
   if (document.documentElement.classList.contains('js-reveal')) {
     const revealTargets = Array.from(document.querySelectorAll(REVEAL_SELECTOR));
     const running = new WeakMap();
+    const shownAt = new WeakMap();
+    const isShown = new WeakMap();   // 'mostrado' vs 'escondido'
+
 
     const hiddenTransform = prefersReducedMotion
       ? 'none'
       : 'translateY(' + REVEAL_SHIFT + 'px)';
 
     const reset = (el) => {
+      // não rearma logo depois de mostrar: durante a própria animação o
+      // deslocamento muda o retângulo do elemento e pode reacionar o
+      // observer — é daí que vinha o tremor no celular
+      if (!isShown.get(el)) return;                 // já está escondido
+
+      const t0 = shownAt.get(el);
+      if (t0 && (performance.now() - t0) < REVEAL_COOLDOWN) return;
+
+      isShown.set(el, false);
       const anim = running.get(el);
       if (anim) { anim.cancel(); running.delete(el); }
       el.style.opacity = '0';
@@ -423,8 +447,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const show = (el, delay) => {
+      /* Guarda decisiva: o observer de entrada dispara toda vez que a razão
+         de interseção cruza o threshold — e durante a rolagem ela cruza para
+         cima e para baixo várias vezes. Sem esta linha, cada disparo
+         reiniciava a animação do zero e o elemento piscava no meio da tela.
+         Era esse o tremor. */
+      if (isShown.get(el)) return;
+      isShown.set(el, true);
+
       const previous = running.get(el);
       if (previous) previous.cancel();
+      shownAt.set(el, performance.now());
 
       const anim = el.animate(
         [
@@ -461,9 +494,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
        - entrada: dispara quando ~8% do elemento passa da margem de 10% do
          rodapé, ou seja quando ele já entrou de verdade na tela;
-       - saída: threshold 0 e nenhuma margem, então só dispara quando o
-         elemento sai POR COMPLETO do campo de visão. É aí que ele rearma.
-         Sem esse par, um elemento parado na borda ficaria piscando. */
+       - saída: threshold 0 com margem POSITIVA de 140px, ou seja o elemento
+         só rearma quando já está bem longe da tela. A margem é maior que o
+         deslocamento da animação, então o próprio movimento do reveal nunca
+         consegue disparar o rearme. Sem isso, no celular o elemento entrava,
+         animava, o transform reacionava o observer e ele tremia. */
     const enterObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) show(entry.target, groupIndex(entry.target) * REVEAL_STAGGER);
@@ -474,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) reset(entry.target);
       });
-    }, { threshold: 0 });
+    }, { rootMargin: '140px 0px 140px 0px', threshold: 0 });
 
     revealTargets.forEach((el) => {
       enterObserver.observe(el);
@@ -485,6 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.setTimeout(() => {
       revealTargets.forEach((el) => {
         if (getComputedStyle(el).opacity === '0' && !running.get(el)) {
+          isShown.set(el, true);
           el.style.opacity = '1';
           el.style.transform = 'none';
         }
@@ -527,13 +563,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const siteTop = document.getElementById('site-top');
 
   if (siteTop) {
+    let lastWidth = null;
+
     const syncTopHeight = () => {
+      lastWidth = window.innerWidth;
       document.documentElement.style.setProperty(
         '--top-h', Math.round(siteTop.getBoundingClientRect().height) + 'px'
       );
     };
+
+    /* No celular, esconder/mostrar a barra de endereço dispara 'resize' a cada
+       rolagem. Remedir ali mudaria o padding do body no meio do gesto e a
+       página daria um pulo. Só remede quando a LARGURA muda (rotação ou
+       redimensionamento real). */
+    const syncIfWidthChanged = () => {
+      if (window.innerWidth !== lastWidth) syncTopHeight();
+    };
+
     syncTopHeight();
-    window.addEventListener('resize', syncTopHeight);
+    window.addEventListener('resize', syncIfWidthChanged);
+    window.addEventListener('orientationchange', syncTopHeight);
     window.addEventListener('load', syncTopHeight);   // depois das fontes
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncTopHeight);
   }
