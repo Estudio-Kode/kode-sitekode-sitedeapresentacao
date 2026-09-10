@@ -417,7 +417,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const REVEAL_DURATION = isNarrow ? 700 : 900;
   const REVEAL_SHIFT = isNarrow ? 18 : 36;
   const REVEAL_STAGGER = isNarrow ? 70 : 120;
-  const REVEAL_COOLDOWN = 500;   // ms mínimos entre mostrar e poder rearmar
+  const REVEAL_COOLDOWN = isNarrow ? 900 : 600;   // ms mínimos entre mostrar e poder rearmar
+
+  /* Zona morta antes de rearmar: 45% da altura da tela. Em % (e não px) para
+     escalar com o aparelho — num celular de 844px isso são ~380px. Assim,
+     rolar para frente e para trás em torno da borda nunca faz o elemento
+     reanimar; ele só rearma quando ficou de fato longe. */
+  const REVEAL_REARM_ZONE = isNarrow ? '45%' : '25%';
 
   if (document.documentElement.classList.contains('js-reveal')) {
     const revealTargets = Array.from(document.querySelectorAll(REVEAL_SELECTOR));
@@ -451,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
          de interseção cruza o threshold — e durante a rolagem ela cruza para
          cima e para baixo várias vezes. Sem esta linha, cada disparo
          reiniciava a animação do zero e o elemento piscava no meio da tela.
-         Era esse o tremor. */
+         Era esse o tremor do vídeo. */
       if (isShown.get(el)) return;
       isShown.set(el, true);
 
@@ -494,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
        - entrada: dispara quando ~8% do elemento passa da margem de 10% do
          rodapé, ou seja quando ele já entrou de verdade na tela;
-       - saída: threshold 0 com margem POSITIVA de 140px, ou seja o elemento
+       - saída: threshold 0 com margem POSITIVA (REVEAL_REARM_ZONE), ou seja o elemento
          só rearma quando já está bem longe da tela. A margem é maior que o
          deslocamento da animação, então o próprio movimento do reveal nunca
          consegue disparar o rearme. Sem isso, no celular o elemento entrava,
@@ -509,7 +515,10 @@ document.addEventListener('DOMContentLoaded', () => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) reset(entry.target);
       });
-    }, { rootMargin: '140px 0px 140px 0px', threshold: 0 });
+    }, {
+      rootMargin: REVEAL_REARM_ZONE + ' 0px ' + REVEAL_REARM_ZONE + ' 0px',
+      threshold: 0
+    });
 
     revealTargets.forEach((el) => {
       enterObserver.observe(el);
