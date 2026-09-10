@@ -1148,6 +1148,18 @@ textarea.form-input {
 .foot-links a:hover { color: var(--color-flame); }
 .foot-links .muted { opacity: .6; }
 
+/* o telefone entra numa segunda linha, em mono, para o rótulo não quebrar */
+.foot-phone {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: .06em;
+  color: var(--color-stone);
+  margin-top: 2px;
+}
+
+.foot-links a:hover .foot-phone { color: var(--color-flame); }
+
 .foot-note {
   display: flex;
   flex-wrap: wrap;
