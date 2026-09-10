@@ -1,124 +1,87 @@
 /* ==========================================================================
-   KODE STUDIO — INTERACTIVE JAVASCRIPT
+   KODE — INTERAÇÕES
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------------------------------------------------
-     1. STICKY HEADER & ACTIVE SECTION TRACKING (SCROLLSPY)
+     1. HEADER STICKY & SCROLLSPY
      --------------------------------------------------------- */
   const header = document.getElementById('header');
   const navLinks = document.querySelectorAll('.nav-link');
-  const sections = document.querySelectorAll('section');
+  const sections = document.querySelectorAll('section[id]');
 
   const handleScroll = () => {
-    // 1.1 Sticky Header Class
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
+    if (header) header.classList.toggle('scrolled', window.scrollY > 40);
 
-    // 1.2 Scrollspy (Track Active Section)
     let currentSectionId = '';
-    const scrollPosition = window.scrollY + 120; // offset for fixed header
+    const scrollPosition = window.scrollY + 140;
 
     sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.offsetHeight;
-
-      if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+      if (scrollPosition >= section.offsetTop &&
+        scrollPosition < section.offsetTop + section.offsetHeight) {
         currentSectionId = section.getAttribute('id');
       }
     });
 
     if (currentSectionId) {
       navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${currentSectionId}`) {
-          link.classList.add('active');
-        }
+        link.classList.toggle('active', link.getAttribute('href') === `#${currentSectionId}`);
       });
     }
   };
 
-  window.addEventListener('scroll', handleScroll);
-  handleScroll(); // Run once on load to set initial state
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
 
   /* ---------------------------------------------------------
-     2. MOBILE MENU TOGGLE
+     2. MENU MOBILE
      --------------------------------------------------------- */
   const mobileToggle = document.getElementById('mobile-toggle');
   const navMenu = document.getElementById('nav-menu');
-  const navLinksList = document.querySelectorAll('.nav-link, .nav-cta');
+
+  const setMenuState = (isOpen) => {
+    if (!mobileToggle || !navMenu) return;
+
+    navMenu.classList.toggle('open', isOpen);
+    mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    mobileToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+
+    const [span1, span2, span3] = mobileToggle.children;
+    span1.style.transform = isOpen ? 'translateY(7px) rotate(45deg)' : 'none';
+    span2.style.opacity = isOpen ? '0' : '1';
+    span3.style.transform = isOpen ? 'translateY(-7px) rotate(-45deg)' : 'none';
+  };
 
   if (mobileToggle && navMenu) {
     mobileToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('open');
-      mobileToggle.classList.toggle('active');
-
-      const isOpen = navMenu.classList.contains('open');
-      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      mobileToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
-
-      // Animate hamburger lines
-      const span1 = mobileToggle.children[0];
-      const span2 = mobileToggle.children[1];
-      const span3 = mobileToggle.children[2];
-
-      if (navMenu.classList.contains('open')) {
-        span1.style.transform = 'translateY(7px) rotate(45deg)';
-        span2.style.opacity = '0';
-        span3.style.transform = 'translateY(-7px) rotate(-45deg)';
-      } else {
-        span1.style.transform = 'none';
-        span2.style.opacity = '1';
-        span3.style.transform = 'none';
-      }
+      setMenuState(!navMenu.classList.contains('open'));
     });
 
-    // Close menu when clicking any link
-    navLinksList.forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('open');
-        mobileToggle.classList.remove('active');
-        mobileToggle.setAttribute('aria-expanded', 'false');
-        mobileToggle.setAttribute('aria-label', 'Abrir menu');
-        Array.from(mobileToggle.children).forEach(span => span.style.transform = 'none');
-        mobileToggle.children[1].style.opacity = '1';
-      });
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setMenuState(false));
     });
   }
 
   /* ---------------------------------------------------------
-     3. FAQ ACCORDION LOGIC
+     3. FAQ — ACORDEÃO EXCLUSIVO
      --------------------------------------------------------- */
   const faqItems = document.querySelectorAll('.faq-item');
 
   faqItems.forEach(item => {
-    const questionButton = item.querySelector('.faq-question');
-
-    questionButton.addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
-
-      // Close all other FAQ items for a clean accordion effect
-      faqItems.forEach(otherItem => {
-        otherItem.classList.remove('active');
-        otherItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      faqItems.forEach(other => {
+        if (other !== item) other.open = false;
       });
-
-      // Toggle current item
-      if (!isActive) {
-        item.classList.add('active');
-        questionButton.setAttribute('aria-expanded', 'true');
-      }
     });
   });
 
   /* ---------------------------------------------------------
-     4. HERO TERMINAL INTERACTIVE ANIMATION
+     4. TERMINAL ANIMADO
      --------------------------------------------------------- */
   const terminalBody = document.getElementById('terminal-body');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const terminalScripts = [
     { type: 'cmd', text: 'npm init kode-studio', delay: 1000 },
@@ -126,14 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
     { type: 'sys', text: 'Kode Studio ativado com sucesso. Estúdio pronto.', delay: 800 },
     { type: 'cmd', text: 'node build_project.js --niche="salao_e_clinicas"', delay: 1200 },
     { type: 'comment', text: '// Carregando catálogo de serviços e padrões de design...', delay: 800 },
-    { type: 'sys', text: '✔ Site Institucional estruturado com código limpo e semântico.', delay: 500 },
-    { type: 'sys', text: '✔ Sistema de agendamento online configurado com banco de dados seguro.', delay: 500 },
-    { type: 'sys', text: '✔ Fluxo de notificações via WhatsApp integrado.', delay: 500 },
+    { type: 'sys', text: '✓ Site Institucional estruturado com código limpo e semântico.', delay: 500 },
+    { type: 'sys', text: '✓ Sistema de agendamento online configurado com banco de dados seguro.', delay: 500 },
+    { type: 'sys', text: '✓ Fluxo de notificações via WhatsApp integrado.', delay: 500 },
     { type: 'cmd', text: 'npm run checklist_qa', delay: 1000 },
     { type: 'comment', text: '// Rodando bateria de testes finais antes de entregar...', delay: 600 },
-    { type: 'sys', text: '✔ Responsividade Mobile (iOS/Android): 100% OK', delay: 400 },
-    { type: 'sys', text: '✔ Validação de inputs e tratamento de erros: OK', delay: 400 },
-    { type: 'sys', text: '✔ Revisão técnica final pelo Arquiteto de Soluções: OK', delay: 500 },
+    { type: 'sys', text: '✓ Responsividade Mobile (iOS/Android): 100% OK', delay: 400 },
+    { type: 'sys', text: '✓ Validação de inputs e tratamento de erros: OK', delay: 400 },
+    { type: 'sys', text: '✓ Revisão técnica final pelo Arquiteto de Soluções: OK', delay: 500 },
     { type: 'ready', text: 'STATUS: PRONTO PARA PUBLICAÇÃO EM PRODUÇÃO! █', delay: 2000 }
   ];
 
@@ -152,85 +115,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }, speed);
   };
 
+  const appendLine = (className, text) => {
+    const lineDiv = document.createElement('div');
+    lineDiv.className = 'terminal-line';
+
+    const span = document.createElement('span');
+    span.className = className;
+    span.textContent = text;
+    lineDiv.appendChild(span);
+    terminalBody.appendChild(lineDiv);
+
+    return lineDiv;
+  };
+
   const runTerminalAnimation = () => {
     if (!terminalBody) return;
 
-    // Clear initial markup to start fresh animation
     terminalBody.innerHTML = '';
     scriptIndex = 0;
 
     const executeNextStep = () => {
       if (scriptIndex >= terminalScripts.length) {
-        // Loop back after 8 seconds of idle time
         setTimeout(runTerminalAnimation, 8000);
         return;
       }
 
       const step = terminalScripts[scriptIndex];
-      const lineDiv = document.createElement('div');
-      lineDiv.className = 'terminal-line';
 
-      if (step.type === 'cmd') {
-        const prefix = document.createElement('span');
-        prefix.className = 'terminal-prefix';
-        prefix.textContent = '>';
-        lineDiv.appendChild(prefix);
+      if (step.type === 'cmd' || step.type === 'comment') {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'terminal-line';
 
-        const code = document.createElement('span');
-        code.className = 'terminal-code';
-        lineDiv.appendChild(code);
+        if (step.type === 'cmd') {
+          const prefix = document.createElement('span');
+          prefix.className = 'terminal-prefix';
+          prefix.textContent = '>';
+          lineDiv.appendChild(prefix);
+        }
+
+        const target = document.createElement('span');
+        target.className = step.type === 'cmd' ? 'terminal-code' : 'terminal-comment';
+        lineDiv.appendChild(target);
         terminalBody.appendChild(lineDiv);
 
-        typeText(code, step.text, () => {
+        typeText(target, step.text, () => {
           scriptIndex++;
           setTimeout(executeNextStep, step.delay);
-        }, 50);
+        }, step.type === 'cmd' ? 50 : 30);
 
-      } else if (step.type === 'comment') {
-        const comment = document.createElement('span');
-        comment.className = 'terminal-comment';
-        lineDiv.appendChild(comment);
-        terminalBody.appendChild(lineDiv);
-
-        typeText(comment, step.text, () => {
-          scriptIndex++;
-          setTimeout(executeNextStep, step.delay);
-        }, 30);
-
-      } else if (step.type === 'sys') {
-        const systemText = document.createElement('span');
-        systemText.style.color = 'var(--color-lime)';
-        systemText.textContent = step.text;
-        lineDiv.appendChild(systemText);
-        terminalBody.appendChild(lineDiv);
-
-        scriptIndex++;
-        setTimeout(executeNextStep, step.delay);
-
-      } else if (step.type === 'ready') {
-        const readyText = document.createElement('span');
-        readyText.style.color = 'var(--color-flame)';
-        readyText.style.fontWeight = 'bold';
-        readyText.textContent = step.text;
-        lineDiv.appendChild(readyText);
-        terminalBody.appendChild(lineDiv);
-
+      } else {
+        appendLine(step.type === 'sys' ? 'terminal-sys' : 'terminal-ready', step.text);
         scriptIndex++;
         setTimeout(executeNextStep, step.delay);
       }
 
-      // Auto scroll terminal to bottom
       terminalBody.scrollTop = terminalBody.scrollHeight;
     };
 
     executeNextStep();
   };
 
-  // Start terminal animation
-  runTerminalAnimation();
+  if (!prefersReducedMotion) runTerminalAnimation();
 
   /* ---------------------------------------------------------
-     5. INTERACTIVE SCOPE PLANNER LOGIC
+     5. PLANEJADOR DE ESCOPO
      --------------------------------------------------------- */
   const plannerOptions = document.querySelectorAll('.planner-option');
   const summaryList = document.getElementById('summary-items-list');
@@ -238,10 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const totalTimeEl = document.getElementById('total-time');
   const btnPlannerWhatsapp = document.getElementById('btn-planner-whatsapp');
 
-  let selectedServices = new Set();
+  const selectedServices = new Set();
 
-  // 'timeline' must mirror the timeline advertised on each service card
-  // (section "Serviços") so a single-service estimate never contradicts it.
+  // 'timeline' espelha o prazo anunciado em cada card de serviço
+  // (seção "Serviços") para que a estimativa nunca o contradiga.
   const serviceDetailsMap = {
     site: { name: 'Site Institucional / Landing Page', time: 7, timeline: '5 a 10 dias úteis' },
     agendamento: { name: 'Sistema de Agendamento Online', time: 28, timeline: '3 a 5 semanas' },
@@ -251,31 +199,25 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const updatePlannerSummary = () => {
+    if (!summaryList) return;
+
     if (selectedServices.size === 0) {
-      // Show placeholder
-      summaryList.innerHTML = `
-        <div class="summary-item-placeholder">
-          <i class="fa-solid fa-cubes"></i>
-          <p>Nenhuma solução selecionada.<br>Selecione ao lado para montar seu escopo.</p>
-        </div>
-      `;
+      summaryList.innerHTML =
+        '<p class="summary-placeholder">Nenhuma solução selecionada.<br>Selecione ao lado para montar seu escopo.</p>';
       totalSolutionsEl.textContent = '0';
       totalTimeEl.textContent = '—';
       btnPlannerWhatsapp.disabled = true;
       return;
     }
 
-    // Clear placeholder
     summaryList.innerHTML = '';
 
-    let totalTime = 0;
     let maxSingleTime = 0;
     let otherTimesSum = 0;
 
     selectedServices.forEach(serviceId => {
       const service = serviceDetailsMap[serviceId];
 
-      // Build visual line in summary
       const itemDiv = document.createElement('div');
       itemDiv.className = 'selected-item';
       itemDiv.innerHTML = `
@@ -284,33 +226,27 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       summaryList.appendChild(itemDiv);
 
-      // Time calculations
       if (service.time > maxSingleTime) {
-        otherTimesSum += maxSingleTime; // add previous max to the rest
-        maxSingleTime = service.time;   // set new max
+        otherTimesSum += maxSingleTime;
+        maxSingleTime = service.time;
       } else {
         otherTimesSum += service.time;
       }
     });
 
-    // Format delivery time string
     let timeText = '';
     if (selectedServices.size === 1) {
-      // Single service: mirror the exact timeline advertised on its service card
-      // so the planner never contradicts the "Serviços" section.
+      // Serviço único: repete o prazo exato do card correspondente.
       const onlyId = selectedServices.values().next().value;
       timeText = `~ ${serviceDetailsMap[onlyId].timeline}`;
     } else {
-      // Smart Parallelized Deadline calculation:
-      // A development team works on things in parallel, so we don't just sum
-      // them up (linear). Estimated time = biggest single timeline + 35% of the
-      // rest (parallel overlap adjustment), rounded up to the nearest integer.
-      totalTime = Math.ceil(maxSingleTime + (otherTimesSum * 0.35));
+      // Prazo paralelizado: maior prazo + 35% da soma dos demais.
+      const totalTime = Math.ceil(maxSingleTime + (otherTimesSum * 0.35));
 
       if (totalTime < 5) {
         timeText = `~ ${totalTime} dias úteis`;
       } else if (totalTime <= 10) {
-        timeText = `~ 5 a 10 dias úteis`;
+        timeText = '~ 5 a 10 dias úteis';
       } else {
         const weeksMin = Math.floor(totalTime / 7);
         const weeksMax = Math.ceil((totalTime + 5) / 7);
@@ -326,20 +262,20 @@ document.addEventListener('DOMContentLoaded', () => {
   plannerOptions.forEach(option => {
     option.addEventListener('click', () => {
       const serviceId = option.getAttribute('data-id');
+      const isSelected = option.classList.toggle('selected');
 
-      option.classList.toggle('selected');
+      option.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
 
-      if (selectedServices.has(serviceId)) {
-        selectedServices.delete(serviceId);
-      } else {
+      if (isSelected) {
         selectedServices.add(serviceId);
+      } else {
+        selectedServices.delete(serviceId);
       }
 
       updatePlannerSummary();
     });
   });
 
-  // WhatsApp Link generator for the planner
   if (btnPlannerWhatsapp) {
     btnPlannerWhatsapp.addEventListener('click', () => {
       if (selectedServices.size === 0) return;
@@ -350,22 +286,19 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const timeEstimate = totalTimeEl.textContent;
-
       const rawText = `Olá, equipe Kode!\n\nUtilizei o planejador do site de vocês e montei um escopo para o meu negócio.\n\n*Soluções desejadas:*\n${servicesListString}\n*Prazo estimado pelo sistema:*\n${timeEstimate}\n\nGostaria de solicitar uma cotação personalizada para este projeto!`;
 
-      const whatsappUrl = `https://wa.me/5541996973947?text=${encodeURIComponent(rawText)}`;
-      window.open(whatsappUrl, '_blank');
+      window.open(`https://wa.me/5541996973947?text=${encodeURIComponent(rawText)}`, '_blank');
     });
   }
 
   /* ---------------------------------------------------------
-     6. CONTACT FORM SUBMISSION & WHATSAPP REDIRECT
+     6. FORMULÁRIO DE CONTATO → WHATSAPP
      --------------------------------------------------------- */
   const contactForm = document.getElementById('main-contact-form');
   const successFeedback = document.getElementById('form-success-feedback');
   const phoneInput = document.getElementById('form-phone');
 
-  // Strip non-numeric characters in real time
   if (phoneInput) {
     phoneInput.addEventListener('input', () => {
       phoneInput.value = phoneInput.value.replace(/[^\d\s()\-+]/g, '');
@@ -381,23 +314,65 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = document.getElementById('form-phone').value;
       const message = document.getElementById('form-message').value;
 
-      // Visual feedback
       successFeedback.classList.add('success');
-      contactForm.querySelector('button[type="submit"]').disabled = true;
+      const submitButton = contactForm.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
 
-      // Build WhatsApp message
       const rawText = `Olá, equipe Kode!\n\nMe chamo *${name}*, da empresa *${business}*.\n\n*Meu WhatsApp:* ${phone}\n*Minha necessidade:*\n${message}\n\nGostaria de agendar um contato para detalharmos uma proposta!`;
 
-      const whatsappUrl = `https://wa.me/5541996973947?text=${encodeURIComponent(rawText)}`;
-
-      // Redirect after 1.5 seconds
       setTimeout(() => {
-        window.open(whatsappUrl, '_blank');
+        window.open(`https://wa.me/5541996973947?text=${encodeURIComponent(rawText)}`, '_blank');
         successFeedback.classList.remove('success');
-        contactForm.querySelector('button[type="submit"]').disabled = false;
+        submitButton.disabled = false;
         contactForm.reset();
       }, 1500);
     });
+  }
+
+  /* ---------------------------------------------------------
+     N. MARQUEE — movimento via requestAnimationFrame
+
+     A faixa era animada por @keyframes, mas o site tem um reset global
+     `* { animation-duration:.01ms !important }` sob prefers-reduced-motion.
+     Em Windows/macOS com "reduzir animações" ligado isso congela QUALQUER
+     animação CSS — era por isso que a faixa aparecia parada. Transform via
+     rAF não é afetado por esse override, então o movimento é garantido; o
+     sistema que pede menos movimento recebe uma versão mais lenta.
+     --------------------------------------------------------- */
+  const marqueeTrack = document.querySelector('.marquee-track');
+
+  if (marqueeTrack && marqueeTrack.children.length) {
+    marqueeTrack.classList.add('js-marquee');   // desliga a keyframe do CSS
+
+    let step = 0;                               // uma cópia do texto + respiro
+    const measureMarquee = () => {
+      const first = marqueeTrack.children[0];
+      const cs = window.getComputedStyle(first);
+      step = first.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
+    };
+    measureMarquee();
+    window.addEventListener('resize', measureMarquee);
+
+    const marqueeSpeed = prefersReducedMotion ? 55 : 150;   // px/s
+    const marqueeBand = marqueeTrack.parentElement;
+    let offset = 0, lastFrame = null, marqueePaused = false;
+
+    marqueeBand.addEventListener('mouseenter', () => { marqueePaused = true; });
+    marqueeBand.addEventListener('mouseleave', () => { marqueePaused = false; });
+    document.addEventListener('visibilitychange', () => { lastFrame = null; });
+
+    const stepMarquee = (now) => {
+      if (lastFrame === null) lastFrame = now;
+      const dt = Math.min((now - lastFrame) / 1000, 0.1);   // ignora abas em background
+      lastFrame = now;
+
+      if (!marqueePaused && step > 0) {
+        offset = (offset + marqueeSpeed * dt) % step;
+        marqueeTrack.style.transform = 'translateX(' + (-offset).toFixed(2) + 'px)';
+      }
+      requestAnimationFrame(stepMarquee);
+    };
+    requestAnimationFrame(stepMarquee);
   }
 
 });

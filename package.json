@@ -1,0 +1,12 @@
+{
+  "name": "site-estudio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Site institucional (landing page) do estúdio kode",
+  "scripts": {
+    "dev": "live-server --port=5500"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

@@ -21,10 +21,17 @@ Site estático de página única — **HTML, CSS e JavaScript puro**, sem build 
 ## Rodar localmente
 
 Como é 100% estático, basta abrir o `index.html` no navegador. Para simular
-um servidor real (recomendado, evita bloqueios de `file://`):
+um servidor real com live-reload (recomendado, evita bloqueios de `file://`):
 
 ```bash
-# Python 3
+npm install
+npm run dev
+# abre automaticamente http://localhost:5500
+```
+
+Alternativa sem Node, usando Python 3:
+
+```bash
 python -m http.server 5500
 # depois abra http://localhost:5500
 ```
