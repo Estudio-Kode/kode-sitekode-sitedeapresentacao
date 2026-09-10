@@ -596,4 +596,58 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncTopHeight);
   }
 
+  /* ---------------------------------------------------------
+     N+4. REEL DO HERO — sempre tocando, nunca interativo
+
+     No celular o autoplay pode ser recusado (Modo de Baixo Consumo no iOS,
+     economia de dados no Android) e o navegador mostra o botão de play. Aqui
+     o play é pedido em código e, se for recusado, é tentado de novo no
+     primeiro toque/rolagem da pessoa em QUALQUER parte da página — assim ela
+     nunca precisa mirar no vídeo. O elemento em si não recebe eventos
+     (pointer-events: none no CSS), então não há pausar nem menu de contexto.
+     --------------------------------------------------------- */
+  const reelVideo = document.getElementById('reel-video');
+
+  if (reelVideo) {
+    // mudo é pré-requisito do autoplay: garantido também via JS, porque um
+    // atributo perdido no HTML derrubaria a reprodução inteira
+    reelVideo.muted = true;
+    reelVideo.defaultMuted = true;
+    reelVideo.volume = 0;
+    reelVideo.loop = true;
+    reelVideo.removeAttribute('controls');
+
+    const tryPlay = () => {
+      const attempt = reelVideo.play();
+      if (attempt && typeof attempt.catch === 'function') attempt.catch(() => {});
+    };
+
+    // bloqueia qualquer interação que ainda escape do CSS
+    ['contextmenu', 'dblclick', 'click', 'touchend'].forEach((evt) => {
+      reelVideo.addEventListener(evt, (e) => { e.preventDefault(); tryPlay(); });
+    });
+
+    // se algo pausar (troca de aba, telefonema, economia de bateria), volta
+    reelVideo.addEventListener('pause', tryPlay);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) tryPlay();
+    });
+
+    // destrava no primeiro gesto da pessoa, uma única vez
+    const unlock = () => {
+      tryPlay();
+      ['touchstart', 'pointerdown', 'keydown', 'scroll'].forEach((evt) =>
+        window.removeEventListener(evt, unlock)
+      );
+    };
+    ['touchstart', 'pointerdown', 'keydown', 'scroll'].forEach((evt) =>
+      window.addEventListener(evt, unlock, { passive: true, once: false })
+    );
+
+    tryPlay();
+    reelVideo.addEventListener('loadeddata', tryPlay);
+    reelVideo.addEventListener('canplay', tryPlay);
+    window.addEventListener('load', tryPlay);
+  }
+
 });

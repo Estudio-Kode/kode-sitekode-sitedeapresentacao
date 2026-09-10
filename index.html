@@ -112,7 +112,11 @@
        ========================================== -->
   <section class="hero-reel" id="inicio">
     <div class="reel-frame">
-      <video class="reel-video" autoplay muted loop playsinline preload="metadata"
+      <video class="reel-video" id="reel-video"
+        autoplay muted loop playsinline webkit-playsinline
+        preload="auto" tabindex="-1"
+        disablepictureinpicture disableremoteplayback
+        controlslist="nodownload noplaybackrate noremoteplayback nofullscreen"
         poster="assets/video/kode_reel_poster.jpg"
         aria-label="Reel de identidade da Kode: o cursor nasce, a palavra kode se digita e as trocas de fundo são feitas pela própria barra do cursor.">
         <source src="assets/video/kode_reel_16x9_1080p.webm" type="video/webm">

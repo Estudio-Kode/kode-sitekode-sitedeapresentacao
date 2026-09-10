@@ -495,6 +495,23 @@ body { padding-top: var(--top-h, 132px); }
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  /* O reel é decoração de marca, não um player: o toque não deve pausar,
+     abrir menu de contexto ("baixar vídeo") nem selecionar nada. */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* alguns navegadores insistem em desenhar o overlay de play sobre o pôster */
+.reel-video::-webkit-media-controls,
+.reel-video::-webkit-media-controls-enclosure,
+.reel-video::-webkit-media-controls-start-playback-button,
+.reel-video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0;
 }
 
 .reel-note {
